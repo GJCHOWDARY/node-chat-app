@@ -12,31 +12,19 @@ describe("Check Uer Login", () => {
   // beforeEach((done) => {
   // });
 
-  describe("User API", () => {
-    it("it should login", (done) => {
-      chai
-        .request(server)
-        .post("/api/auth/login")
-        .send({ email: "user@gmail.com", password: "user@123" })
-        .end((err, res) => {
-          res.should.have.status(200);
-          done();
-        });
-    });
-  });
-
   /*
    * Test the /POST route
    */
+  const random = Math.floor(Math.random() * 1000 + 1);
+  const email='user$'+random+'@gmail.com'.trim();
   
   describe("Enroll new User", () => {
     it("it should POST a new user", (done) => {
-      var random = Math.floor(Math.random() * 1000 + 1);
       chai
         .request(server)
         .post("/api/auth/signup")
         .send({
-          email: `user${random}@gmail.com`,
+          email,
           password: "12345678",
           name: "hello00", 
         })
@@ -46,4 +34,18 @@ describe("Check Uer Login", () => {
         });
     });
   });
+
+  describe("User API", () => {
+    it("it should login", (done) => {
+      chai
+        .request(server)
+        .post("/api/auth/login")
+        .send({ email, password: "12345678" })
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+
 });

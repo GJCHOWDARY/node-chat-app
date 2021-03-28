@@ -32,3 +32,5 @@ io.sockets.on("connection", function (socket) {
       io.emit('message', data);
     });
 });
+
+module.exports = server;

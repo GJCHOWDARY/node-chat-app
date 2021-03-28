@@ -1,5 +1,5 @@
 const Chat = require("../models/chat"),
-  _ = require('underscore'),
+  _ = require("underscore"),
   { deafult: Config } = require("../config/config"),
   validator = require("validator");
 
@@ -33,12 +33,18 @@ exports.saveMessage = async (req, res, next) => {
 };
 
 exports.getChats = async (req, res, next) => {
-  try {  
-    const senderChat = await Chat.find({ senderId: req.userId, receiverId: req.params.receiverId });
-    const receiverChat = await Chat.find({ senderId: req.params.receiverId, receiverId: req.userId });
-    
+  try {
+    const senderChat = await Chat.find({
+      senderId: req.userId,
+      receiverId: req.params.receiverId,
+    });
+    const receiverChat = await Chat.find({
+      senderId: req.params.receiverId,
+      receiverId: req.userId,
+    });
+
     let chats = senderChat.concat(...receiverChat);
-     chats = _.sortBy(chats, 'createdAt');
+    chats = _.sortBy(chats, "createdAt");
 
     return res.status(201).json({
       message: "Successfully Fetched!",
@@ -71,7 +77,9 @@ exports.deleteUserChat = async (req, res, next) => {
 
 exports.backupChats = async (req, res, next) => {
   try {
-    const chats = await Chat.find({ senderId: req.params.senderId });
+    const chats = await Chat.find({ senderId: req.params.senderId }).select(
+      "_id senderId message"
+    );
 
     res.status(201).json({
       message: "Successfully Deleted!",
