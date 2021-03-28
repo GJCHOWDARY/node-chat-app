@@ -8,38 +8,27 @@ const dotenv = require("dotenv").config(),
 
 let server = require("http").createServer(app);
 
-Mongoose.Promise = Promise;
-
-Mongoose.connection.on("connected", () => {
-  console.log("Connection Established");
-
-  //INFO: http server
-  server = app.listen(port, function () {
-    console.log(`Server is running on: http://localhost:${port}`);
-  });
-
-  //INFO: socket connection
-  let io = socket(server);
-  app.set("socketio", io);
-  io.sockets.on("connection", function (socket) {
-    console.log("connected");
-  });
-});
-
-Mongoose.connection.on("reconnected", () => {
-  console.log("Connection Reestablished");
-});
-
-Mongoose.connection.on("disconnected", () => {
-  console.log("Connection Disconnected");
-});
-
-Mongoose.connection.on("close", () => {
-  console.log("Connection Closed");
-});
-
-Mongoose.connection.on("error", (error) => {
-  console.log("ERROR: " + error);
-});
-
 Connection();
+
+//INFO: http server
+server = app.listen(port, function () {
+  console.log(`Server is running on: http://localhost:${port}`);
+});
+
+//INFO: socket connection
+let io = socket(server, {
+  cors: {
+    origin: "http://localhost:4200",
+    credentials: true,
+  },
+});
+
+app.set("socketio", io);
+
+io.sockets.on("connection", function (socket) {
+  // console.log("connected");
+  socket.on('message', function (data) {
+      console.log(data);
+      io.emit('message', data);
+    });
+});

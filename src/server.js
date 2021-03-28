@@ -12,6 +12,12 @@ const path = require("path"),
 
 const server = app();
 
+server.get("/", (req, res) => {
+  let io = req.app.get("socketio");
+  io.emit("hi!");
+  res.sendFile(__dirname + "/index.html");
+});
+
 server.use(bodyParser.json({ limit: "100mb" }));
 
 server.use(bodyParser.urlencoded({ extended: false }));
@@ -45,6 +51,10 @@ server.use(app.static(path.resolve(__dirname, "dist/chat-app")));
 server.use(auth);
 
 server.use(errorHandler);
+
+server.use("/api/auth", require("./routes/auth"));
+server.use("/api/user", auth, require("./routes/user"));
+server.use("/api/chat", auth, require("./routes/chat"));
 
 server.get("/api/*", function (req, res) {
   res.status(404).json({

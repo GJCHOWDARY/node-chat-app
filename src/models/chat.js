@@ -9,23 +9,25 @@ const userSchema = new Schema(
     },
     status: {
       type: String,
-      default: "Inactive",
+      default: "Active",
     },
-    senderUserId: {
+    senderId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
+      required: true,
     },
-    receiverUserId: {
+    receiverId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
+      required: true,
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
     updatedBy: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
   },
   { timestamps: true }

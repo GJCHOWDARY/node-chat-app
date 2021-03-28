@@ -15,8 +15,9 @@ const connect = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true
     });
+    console.log('Connected to Mongoose');
   } catch (err) {
-    console.error(err);
+    throw new Error('Mongoose Connection Error');
   }
 };
 
