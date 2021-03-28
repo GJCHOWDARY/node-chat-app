@@ -16,7 +16,7 @@ describe("Check Uer Login", () => {
     it("it should login", (done) => {
       chai
         .request(server)
-        .post("/api/authenticate/login")
+        .post("/api/auth/login")
         .send({ email: "user@gmail.com", password: "user@123" })
         .end((err, res) => {
           res.should.have.status(200);
@@ -34,7 +34,7 @@ describe("Check Uer Login", () => {
       var random = Math.floor(Math.random() * 1000 + 1);
       chai
         .request(server)
-        .post("/api/authenticate/enrollnewuser")
+        .post("/api/auth/signup")
         .send({
           email: `user${random}@gmail.com`,
           password: "12345678",
