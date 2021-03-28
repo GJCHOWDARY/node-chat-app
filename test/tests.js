@@ -16,8 +16,8 @@ describe("Check Uer Login", () => {
    * Test the /POST route
    */
   const random = Math.floor(Math.random() * 1000 + 1);
-  const email='user$'+random+'@gmail.com'.trim();
-  
+  const email='user'+random+'@gmail.com'.trim();
+
   describe("Enroll new User", () => {
     it("it should POST a new user", (done) => {
       chai
@@ -26,7 +26,7 @@ describe("Check Uer Login", () => {
         .send({
           email,
           password: "12345678",
-          name: "hello00", 
+          name: "user"+random, 
         })
         .end((err, res) => {
           res.should.have.status(201); 

@@ -1,5 +1,6 @@
 const Chat = require("../models/chat"),
   _ = require("underscore"),
+  mongoose = require("mongoose"),
   { deafult: Config } = require("../config/config"),
   validator = require("validator");
 
@@ -62,10 +63,9 @@ exports.getChats = async (req, res, next) => {
 exports.deleteUserChat = async (req, res, next) => {
   try {
     await Chat.deleteMany({ senderId: req.params.senderId });
-
-    return res.status(201).json({
-      message: "Successfully Deleted!",
-      status: true,
+      res.status(201).json({
+        message: "Successfully Deleted Chat!",
+        status: true,
     });
   } catch (err) {
     if (!err.statusCode) {
@@ -77,12 +77,12 @@ exports.deleteUserChat = async (req, res, next) => {
 
 exports.backupChats = async (req, res, next) => {
   try {
-    const chats = await Chat.find({ senderId: req.params.senderId }).select(
+    const chats = await Chat.find({ senderId: req.userId }).select(
       "_id senderId message"
     );
 
     res.status(201).json({
-      message: "Successfully Deleted!",
+      message: "Backup Chat!",
       status: true,
       chats,
     });
